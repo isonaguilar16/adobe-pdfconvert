@@ -1,15 +1,15 @@
-import convert from './modules/convert'
+import express from 'express'
+import convert from './modules/convert.js'
 
-const express = require('express')
 const app = express()
 const port = process.env.PORT || 5001
 
 
-// app.get('/', (req, res) => {
-//   res.send('Hello World!')
-// })
+app.get('/', (req, res) => {
+  res.send('Hello World!')
+})
 
-convert(app)
+convert(app);
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)

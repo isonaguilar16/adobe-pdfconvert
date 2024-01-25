@@ -1,7 +1,9 @@
-module.exports = function(app){
+import fetch from 'node-fetch'
+import FormData from 'form-data';
 
-   
-    app.post('/get-token', async (req, res) => {
+export default function(app){
+    app.get('/get-token', async (req, res) => {
+        console.log('requested')
         const url = 'https://pdf-services.adobe.io/token';
       
         // Replace these values with your actual client_id and client_secret
@@ -9,6 +11,9 @@ module.exports = function(app){
         const client_secret = 'jhJyBzsfXDJxz6eemQEHmmcD1OVMVsif';
       
         const payload = `client_id=${encodeURIComponent(client_id)}&client_secret=${encodeURIComponent(client_secret)}`;
+        const formData = new FormData();
+        formData.append('client_id', client_id)
+        formData.append('client_secret', client_secret)
       
         try {
           const response = await fetch(url, {
@@ -16,7 +21,7 @@ module.exports = function(app){
             headers: {
               'Content-Type': 'application/x-www-form-urlencoded',
             },
-            body: payload,
+            body: formData,
           });
       
           if (!response.ok) {
@@ -25,9 +30,9 @@ module.exports = function(app){
       
           const data = await response.json();
           res.json({ access_token: data.access_token });
-          res.send(data.access_token)
+          console.log(data.access_token)
+          res.send(200)
         } catch (error) {
-          console.error('Error:', error.message);
           res.status(500).json({ error: error.message });
         }
       });
